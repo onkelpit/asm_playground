@@ -1,8 +1,11 @@
-hw: hw.o
-	ld -o hw hw.o
+DIRS=$(wildcard */)
+CLEAND=$(addprefix clean_,$(DIRS))
+all: $(DIRS)
+clean: $(CLEAND)
+.PHONY: force
+$(DIRS): force
+	make -C $@
 
-hw.o: hw.asm
-	nasm -f elf64 -o hw.o hw.asm
+$(CLEAND): force
+	make -C $(patsubst clean_%,%,$@) clean
 
-clean:
-	rm -rf hw hw.o
